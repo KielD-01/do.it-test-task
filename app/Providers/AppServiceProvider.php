@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+define('DS', DIRECTORY_SEPARATOR);
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

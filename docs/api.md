@@ -2,6 +2,7 @@
 
 ### Sign In
 `POST /api/sign-in`     
+`Content-Type: x-www-form-urlencoded`
 `Body { email: string, password: string }`      
 **Success Response**
 ```json
@@ -9,7 +10,10 @@
     "data": {
         "user": {
             "id": 1,
-            "avatar": "http://placehold.it/100x100",
+            "avatar": {
+                "main": "/uploads/avatars/user_1/avatar.png",
+                "thumbnail": "/uploads/avatars/user_1/thumbnail.png"
+            },
             "email": "rom...@yahoo.com",
             "token": "2ce...bfa",
             "api_token": null,
@@ -36,7 +40,8 @@
 
 ### Sign Up
 `POST /api/sign-up`     
-`Body { email: string|required, password: string|required, token: string|required, avatar: string}`      
+`Content-Type: form-data`      
+`Body { email: string|required, password: string|required, token: string|required, avatar: file}`      
 
 **Success Response**
 ```json
@@ -76,6 +81,7 @@
 
 ### Send Email to Github Users By an Email
 `POST /api/github/send/emails`
+`Content-Type: x-www-form-urlencoded`
 `Body { users: array|required, message: string|required }`  
 **Success Response**
 ```json
@@ -103,7 +109,7 @@
 ```
 
 ### How to login for Mailtrap.io?
-Email   `h628025@nwytg.net`     
+Email   `h628025@nwytg.net` (was generated with 10minutes mail)     
 Password    `demobox`
 
 `.env.example` file already contains credentials for the fake SMTP server of the MailTrap

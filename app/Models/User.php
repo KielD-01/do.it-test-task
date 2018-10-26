@@ -10,7 +10,8 @@ use Laravel\Passport\HasApiTokens;
 /**
  * Class User
  * @package App
- * @property string avatar
+ * @property integer id
+ * @property object avatar
  * @property string email
  * @property string password
  * @property string token
@@ -32,7 +33,11 @@ class User extends Authenticatable
         'email',
         'password',
         'token',
-        'api_token'
+        'api_token',
+    ];
+
+    protected $casts = [
+        'avatar' => 'json'
     ];
 
     /**
