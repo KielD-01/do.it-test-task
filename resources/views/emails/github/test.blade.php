@@ -4,9 +4,6 @@
     <p style="font-style: italic; font-weight: 700;">{{ $text }}</p>
     @if($weatherSignature)
         <hr>
-        <p>Weather JSON in {{ $location }}, huh?</p>
-        <p>
-            {!! $weatherSignature !!}
-        </p>
+        <p>Weather in {{ $location }}, huh? {!! $weatherSignature !!}</p>
     @endif
 </div>
