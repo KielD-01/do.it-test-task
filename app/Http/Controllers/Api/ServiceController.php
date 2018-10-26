@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SendEmails;
+use App\Mail\TestMail;
 use App\Models\User;
 use Github\Client;
 use GrahamCampbell\GitHub\GitHubManager;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class ServiceController
@@ -19,6 +23,10 @@ class ServiceController extends Controller
     /** @var GitHubManager */
     private $github;
 
+    /**
+     * ServiceController constructor.
+     * @param GitHubManager $github
+     */
     public function __construct(GitHubManager $github)
     {
         parent::__construct();
@@ -26,11 +34,13 @@ class ServiceController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Preparing emails to be sent
+     *
+     * @param SendEmails $request
      * @param GitHubManager $github
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendEmailsToGitHubUsers(Request $request, GitHubManager $github)
+    public function sendEmailsToGitHubUsers(SendEmails $request, GitHubManager $github)
     {
 
         /** @var User $user */
@@ -46,14 +56,25 @@ class ServiceController extends Controller
 
             $users = array_filter($users);
 
-            return $this->jsonResponse(compact('users'));
+            $this->sendMail(
+                $users,
+                $request->post('message', 'Here we do have no content :(')
+            );
+
+            return $this->jsonResponse([
+                'message' => 'Emails has been sent to the recipients',
+                'recipients' => $users
+            ], [], 200);
+
         } catch (\Exception $exception) {
-            return $this->jsonResponse(null, [$exception->getMessage()], 400);
+            return $this->jsonResponse(null, [$exception->getMessage()], 422);
         }
     }
 
     /**
-     * @param null $gitHubUserName
+     * Check the User from the GitHub
+     *
+     * @param null|string $gitHubUserName
      * @return null
      */
     private function checkUser($gitHubUserName = null)
@@ -64,7 +85,24 @@ class ServiceController extends Controller
 
         $user = $this->github->api('users')->show($gitHubUserName);
 
-        return $user['email'] ? $user : null;
+        return $user['email'] ?? null;
+    }
+
+    /**
+     * Sending an email
+     *
+     * @param array $emails
+     * @param null $message
+     * @return bool|mixed
+     */
+    private function sendMail($emails = [], $message = null)
+    {
+        if (!$message || !$emails) {
+            return false;
+        }
+
+        return Mail::to($emails)
+            ->send(new TestMail($message));
     }
 
 }
