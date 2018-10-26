@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use GrahamCampbell\GitHub\GitHubManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ServiceController
@@ -26,8 +28,12 @@ class ServiceController extends Controller
     {
         $users = $request->post('users');
 
-        foreach ($users as $user) {
+        /** @var User $user */
+        $user = Auth::user();
+        $github->authenticate($user->api_token);
 
+        foreach ($users as $index => $user) {
+            $users[$index] = $github;
         }
 
         return $this->jsonResponse(compact('users'));

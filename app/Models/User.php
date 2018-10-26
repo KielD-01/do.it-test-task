@@ -14,6 +14,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string email
  * @property string password
  * @property string token
+ * @property string api_token
  * @property Carbon created_at
  * @property Carbon updated_at
  */
