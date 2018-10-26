@@ -2,7 +2,7 @@
 
 ### Sign In
 `POST /api/sign-in`     
-`Content-Type: x-www-form-urlencoded`
+`Content-Type: x-www-form-urlencoded`   
 `Body { email: string, password: string }`      
 **Success Response**
 ```json
@@ -80,8 +80,8 @@
 ```
 
 ### Send Email to Github Users By an Email
-`POST /api/github/send/emails`
-`Content-Type: x-www-form-urlencoded`
+`POST /api/github/send/emails`  
+`Content-Type: x-www-form-urlencoded`   
 `Body { users: array|required, message: string|required }`  
 **Success Response**
 ```json
