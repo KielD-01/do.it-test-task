@@ -1,14 +1,10 @@
-# Do.It Test Task
+# DO IT Laravel Test Task
 
-### Tech Stack Used
-- Laravel 5.6
-
-### How To run?
-
-Before running script below, You need to create a `do_it_test` database in mysql:   
-`cp .env.example .env;` 
-
-After this operation, You need to run full line of the script below:    
-`composer install; php artisan migrate; php artisan passport:install;`
-
-### API
+### How to run it?
+1. Run `composer install`
+2. Run `cp .env.example .env`
+3. Create database `do_it_test`
+4. Updated MySQL connection credentials in the `DB_*` from the `.env` file
+5. Run `php artisan migrate; php artisan passport:install; php artisan key:generate; php artisan serve`
+6. Open Postman or make a call as in the [API](./docs/api.md)
+7. Enjoy!
