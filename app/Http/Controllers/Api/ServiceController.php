@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Github\Client;
 use GrahamCampbell\GitHub\GitHubManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +15,14 @@ use Illuminate\Support\Facades\Auth;
  */
 class ServiceController extends Controller
 {
-    public function __construct()
+
+    /** @var GitHubManager */
+    private $github;
+
+    public function __construct(GitHubManager $github)
     {
         parent::__construct();
+        $this->github = $github;
     }
 
     /**
@@ -26,17 +32,39 @@ class ServiceController extends Controller
      */
     public function sendEmailsToGitHubUsers(Request $request, GitHubManager $github)
     {
-        $users = $request->post('users');
 
         /** @var User $user */
         $user = Auth::user();
-        $github->authenticate($user->api_token);
 
-        foreach ($users as $index => $user) {
-            $users[$index] = $github;
+        try {
+            $github->authenticate($user->token, null, Client::AUTH_URL_TOKEN);
+            $users = $request->post('users');
+
+            foreach ($users as $index => $user) {
+                $users[$index] = $this->checkUser($user);
+            }
+
+            $users = array_filter($users);
+
+            return $this->jsonResponse(compact('users'));
+        } catch (\Exception $exception) {
+            return $this->jsonResponse(null, [$exception->getMessage()], 400);
+        }
+    }
+
+    /**
+     * @param null $gitHubUserName
+     * @return null
+     */
+    private function checkUser($gitHubUserName = null)
+    {
+        if (!$gitHubUserName) {
+            return null;
         }
 
-        return $this->jsonResponse(compact('users'));
+        $user = $this->github->api('users')->show($gitHubUserName);
+
+        return $user['email'] ? $user : null;
     }
 
 }
