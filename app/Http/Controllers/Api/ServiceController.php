@@ -11,6 +11,7 @@ use GrahamCampbell\GitHub\GitHubManager;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -102,7 +103,7 @@ class ServiceController extends Controller
         }
 
         return Mail::to($emails)
-            ->send(new TestMail($message));
+            ->send(new TestMail($message, $this->github->currentUser()->show()['location']));
     }
 
 }
