@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.mailtrap.io'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 2525),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
+    'username' => 'ed049dca6a2df4',
 
-    'password' => env('MAIL_PASSWORD'),
+    'password' => '86912e3b7d5999',
 
     /*
     |--------------------------------------------------------------------------
@@ -119,5 +119,6 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
+    
+  'pretend' => false
 ];
