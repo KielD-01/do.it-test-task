@@ -1,5 +1,7 @@
 # DO IT Laravel Test Task
 
+API Endpoint URI - `http://95.47.114.252/api/`
+
 ### How to run it?
 1. Run `composer install`
 2. Run `cp .env.example .env`
